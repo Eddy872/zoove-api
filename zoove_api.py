@@ -16,8 +16,8 @@ from transformers import T5ForConditionalGeneration, T5Tokenizer
 app = FastAPI()
 
 # Charger le modèle fine-tuné
-tokenizer = T5Tokenizer.from_pretrained("./zoove_chatbot")
-model = T5ForConditionalGeneration.from_pretrained("./zoove_chatbot")
+tokenizer = T5Tokenizer.from_pretrained("zoove_chatbot")
+model = T5ForConditionalGeneration.from_pretrained("zoove_chatbot")
 model.eval()
 
 
