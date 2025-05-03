@@ -5,7 +5,7 @@ FROM python:3.10
 WORKDIR /app
 
 # Copier tout le contenu de notebooks/ (code + modèle + requirements)
-COPY ./notebooks /app
+COPY . /app
 
 # Installer les dépendances
 RUN pip install --no-cache-dir -r requirements.txt
