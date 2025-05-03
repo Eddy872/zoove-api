@@ -1,17 +1,18 @@
-# Base Python image
 FROM python:3.10
 
-# Dossier de travail dans le conteneur
 WORKDIR /app
 
-# Copier tout le contenu de notebooks/ (code + modèle + requirements)
 COPY . /app
 
-# Installer les dépendances
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Exposer le port 8000 (utilisé par uvicorn)
+RUN mkdir /app/zoove_chatbot && \
+    mv /app/config.json /app/zoove_chatbot/ && \
+    mv /app/tokenizer_config.json /app/zoove_chatbot/ && \
+    mv /app/special_tokens_map.json /app/zoove_chatbot/ && \
+    mv /app/spiece.model /app/zoove_chatbot/ && \
+    mv /app/model.safetensors /app/zoove_chatbot/
+
 EXPOSE 8000
 
-# Lancer FastAPI avec uvicorn
 CMD ["uvicorn", "zoove_api:app", "--host", "0.0.0.0", "--port", "8000"]
