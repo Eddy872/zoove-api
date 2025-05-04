@@ -1,33 +1,16 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 from fastapi import FastAPI
 from pydantic import BaseModel
-import sentencepiece
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 
-
-# In[6]:
-
-
 app = FastAPI()
-
-# Charger le modèle fine-tuné
-tokenizer = T5Tokenizer.from_pretrained("zoove_chatbot", local_files_only=True)
-model = T5ForConditionalGeneration.from_pretrained("zoove_chatbot", local_files_only=True)
+tokenizer = T5Tokenizer.from_pretrained("Eddy872/zoove-t5")
+model = T5ForConditionalGeneration.from_pretrained("Eddy872/zoove-t5")
 model.eval()
-
-
-# In[8]:
-
 
 class Request(BaseModel):
     species: str
     message: str
-        
+
 @app.get("/")
 def read_root():
     return {"message": "Bienvenue sur l’API Zoove 🤖"}
@@ -45,10 +28,3 @@ def chat_with_zoove(req: Request):
     )
     response = tokenizer.decode(output[0], skip_special_tokens=True)
     return {"response": response}
-
-
-# In[ ]:
-
-
-
-
