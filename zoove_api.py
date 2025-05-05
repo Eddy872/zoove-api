@@ -23,8 +23,11 @@ def read_root():
 
 @app.post("/chat")
 def chat_with_zoove(req: Request):
+    print("📥 Requête reçue")
     prompt = f"{req.species}. {req.message}"
+    print(f"📝 Prompt généré : {prompt}")
     inputs = tokenizer(prompt, return_tensors="pt", max_length=64, truncation=True, padding="max_length")
+    print("📦 Texte tokenizé")
     print("⚙️ Génération en cours...")
     output = model.generate(
         inputs["input_ids"],
