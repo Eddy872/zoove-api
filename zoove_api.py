@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from transformers import T5ForConditionalGeneration, T5Tokenizer
+import logging
+logging.basicConfig(level=logging.INFO)
+print("🟡 Chargement du tokenizer et du modèle...")
+
 
 app = FastAPI()
 tokenizer = T5Tokenizer.from_pretrained("Eddy872/zoove-t5")
