@@ -34,3 +34,5 @@ def chat_with_zoove(req: Request):
     )
     response = tokenizer.decode(output[0], skip_special_tokens=True)
     return {"response": response}
+
+print("✅ API prête à recevoir des requêtes")
