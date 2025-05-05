@@ -25,13 +25,15 @@ def read_root():
 def chat_with_zoove(req: Request):
     prompt = f"{req.species}. {req.message}"
     inputs = tokenizer(prompt, return_tensors="pt", max_length=64, truncation=True, padding="max_length")
+    print("⚙️ Génération en cours...")
     output = model.generate(
         inputs["input_ids"],
-        max_length=64,
-        num_beams=4,
+        max_length=32,
+        num_beams=2,
         early_stopping=True,
         eos_token_id=tokenizer.eos_token_id
     )
+    print("✅ Génération terminée")
     response = tokenizer.decode(output[0], skip_special_tokens=True)
     return {"response": response}
 
