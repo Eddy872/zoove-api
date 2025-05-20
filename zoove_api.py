@@ -21,6 +21,10 @@ class Request(BaseModel):
 def read_root():
     return {"message": "Bienvenue sur l’API Zoove 🤖"}
 
+@app.get("/ping")
+def ping():
+    return {"status": "ok"}
+
 @app.post("/chat")
 def chat_with_zoove(req: Request):
     print("📥 Requête reçue")
