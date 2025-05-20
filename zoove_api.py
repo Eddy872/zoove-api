@@ -1,17 +1,17 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from transformers import T5ForConditionalGeneration, T5Tokenizer
-print("🧠 Chargement du modèle depuis Hugging Face...")
+import os
+from openai import OpenAI
 import logging
-logging.basicConfig(level=logging.INFO)
-print("✅ Lancement de l'API Zoove...")
 
+# 🔐 Initialise le client OpenAI avec clé API depuis les variables d'env
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+
+# 🧠 Logs
+logging.basicConfig(level=logging.INFO)
+print("✅ Lancement de l'API Zoove avec GPT-3.5...")
 
 app = FastAPI()
-tokenizer = T5Tokenizer.from_pretrained("google/flan-t5-base")
-model = T5ForConditionalGeneration.from_pretrained("google/flan-t5-base")
-model.eval()
-print("✅ Modèle chargé avec succès")
 
 class Request(BaseModel):
     species: str
@@ -28,20 +28,26 @@ def ping():
 @app.post("/chat")
 def chat_with_zoove(req: Request):
     print("📥 Requête reçue")
-    prompt = f"{req.species}. {req.message}"
-    print(f"📝 Prompt généré : {prompt}")
-    inputs = tokenizer(prompt, return_tensors="pt", max_length=64, truncation=True, padding="max_length")
-    print("📦 Texte tokenizé")
-    print("⚙️ Génération en cours...")
-    output = model.generate(
-        inputs["input_ids"],
-        max_length=32,
-        num_beams=2,
-        early_stopping=True,
-        eos_token_id=tokenizer.eos_token_id
-    )
-    print("✅ Génération terminée")
-    response = tokenizer.decode(output[0], skip_special_tokens=True)
-    return {"response": response}
 
-print("✅ API prête à recevoir des requêtes")
+    # 📝 Construction du prompt en langage naturel
+    prompt = f"""Tu es Zoove, un assistant expert en comportement animal.
+Réponds toujours en français, de manière bienveillante et claire.
+
+Espèce : {req.species}
+Utilisateur : {req.message}
+Zoove :"""
+
+    print(f"📝 Prompt envoyé à OpenAI :\n{prompt}")
+
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Tu es Zoove, un assistant animalier intelligent."},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.7,
+        max_tokens=200
+    )
+
+    print("✅ Réponse générée")
+    return {"response": response.choices[0].message.content.strip()}

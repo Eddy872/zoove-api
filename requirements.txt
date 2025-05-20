@@ -1,5 +1,3 @@
 fastapi
 uvicorn
-transformers
-torch
-sentencepiece
+openai>=1.0.0
