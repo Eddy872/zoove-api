@@ -8,8 +8,8 @@ print("✅ Lancement de l'API Zoove...")
 
 
 app = FastAPI()
-tokenizer = T5Tokenizer.from_pretrained("Eddy872/zoove-t5")
-model = T5ForConditionalGeneration.from_pretrained("Eddy872/zoove-t5")
+tokenizer = T5Tokenizer.from_pretrained("google/flan-t5-base")
+model = T5ForConditionalGeneration.from_pretrained("google/flan-t5-base")
 model.eval()
 print("✅ Modèle chargé avec succès")
 
