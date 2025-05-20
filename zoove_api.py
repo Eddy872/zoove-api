@@ -30,12 +30,7 @@ def chat_with_zoove(req: Request):
     print("📥 Requête reçue")
 
     # 📝 Construction du prompt en langage naturel
-    prompt = f"""Tu es Zoove, un assistant expert en comportement animal.
-Réponds toujours en français, de manière bienveillante et claire.
-
-Espèce : {req.species}
-Utilisateur : {req.message}
-Zoove :"""
+    prompt = f"Animal : {req.species}\nUtilisateur : {req.message}\nZoove :"
 
     print(f"📝 Prompt envoyé à OpenAI :\n{prompt}")
 
